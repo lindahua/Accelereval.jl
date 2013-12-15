@@ -75,3 +75,25 @@ lb = dex(randbool(2, 3))
 @test_dex (a .>= b) DelayedBinaryMap{:.>=, DeFMat, DeFMat} (2, 3)
 @test_dex (a .<= b) DelayedBinaryMap{:.<=, DeFMat, DeFMat} (2, 3)
 
+# some math functions
+
+@test_dex abs(a) DelayedUnaryMap{:abs, DeFMat} (2, 3)
+@test_dex exp(a) DelayedUnaryMap{:exp, DeFMat} (2, 3)
+@test_dex ifloor(a) DelayedUnaryMap{:ifloor, DeFMat} (2, 3)
+@test_dex hypot(a, b) DelayedBinaryMap{:hypot, DeFMat, DeFMat} (2, 3)
+@test_dex atan2(a, 2.0) DelayedBinaryMap{:atan2, DeFMat, Float64} (2, 3)
+@test_dex sind(a) DelayedUnaryMap{:sind, DeFMat} (2, 3)
+@test_dex lgamma(a) DelayedUnaryMap{:lgamma, DeFMat} (2, 3)
+@test_dex beta(a, b) DelayedBinaryMap{:beta, DeFMat, DeFMat} (2, 3)
+
+# compound expressions
+
+T1 = DelayedUnaryMap{:exp, 
+		DelayedBinaryMap{:.*, 
+			DelayedUnaryMap{:abs2, DelayedBinaryMap{:-, DeFMat, DeFMat}}, 
+			DelayedBinaryMap{:+, DeFMat, Float64}}}
+
+@test_dex exp(abs2(a - b) .* (c + 1.0)) T1 (2, 3)
+# println(exp(abs2(a - b) .* (c + 1.0)))
+
+
