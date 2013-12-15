@@ -9,6 +9,10 @@ import
 	Base.+, Base.-, Base.*, Base./, Base.\, Base.^,
 	Base.(.+), Base.(.-), Base.(.*), Base.(./), Base.(.^),
 
+	# logical & comparison
+	Base.&, Base.|, Base.~, Base.$, 
+	Base.(.==), Base.(.!=), Base.(.>), Base.(.<), Base.(.>=), Base.(.<=),
+
 	# elementary functions
 	Base.abs, Base.abs2
 
@@ -27,13 +31,15 @@ import
 
 # generic definitions
 
-const unary_ewise_ops = [:-, :abs, :abs2]
+const unary_ewise_ops = [:-, :~, :abs, :abs2]
 
 for op in unary_ewise_ops
 	@eval ($op)(x::DelayedExpr) = dex($(Meta.quot(op)), x)
 end
 
-const binary_ewise_ops = [:+, :-, :.+, :.-, :.*, :./, :.^]
+const binary_ewise_ops = [
+	:+, :-, :.+, :.-, :.*, :./, :.^, 
+	:&, :|, :$, :.==, :.!=, :.<, :.>, :.<=, :.>=]
 
 for op in binary_ewise_ops
 	@eval ($op)(x1::DelayedExpr, x2::DelayedExpr) = dex($(Meta.quot(op)), x1, x2)

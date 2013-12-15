@@ -23,6 +23,7 @@ b = dex(bmat)
 c = dex(cmat)
 
 typealias DeFMat DelayedArray{Array{Float64, 2}}
+typealias DeBMat DelayedArray{BitMatrix}
 
 @test_dex a DeFMat (2, 3)
 @test_dex b DeFMat (2, 3)
@@ -31,6 +32,9 @@ typealias DeFMat DelayedArray{Array{Float64, 2}}
 @test a.arr === amat
 @test b.arr === bmat
 @test c.arr === cmat
+
+la = dex(randbool(2, 3))
+lb = dex(randbool(2, 3))
 
 # arithmetic operations
 
@@ -54,4 +58,20 @@ typealias DeFMat DelayedArray{Array{Float64, 2}}
 @test_throws a * b
 @test_throws a ^ 2.0
 @test_throws a ^ b
+
+# logical & comparison
+
+@test_dex ~la DelayedUnaryMap{:~, DeBMat} (2, 3)
+@test_dex (la & lb) DelayedBinaryMap{:&, DeBMat, DeBMat} (2, 3)
+@test_dex (la | lb) DelayedBinaryMap{:|, DeBMat, DeBMat} (2, 3)
+
+@test_dex (la & true) DelayedBinaryMap{:&, DeBMat, Bool} (2, 3)
+@test_dex (la | false) DelayedBinaryMap{:|, DeBMat, Bool} (2, 3)
+
+@test_dex (a .== b) DelayedBinaryMap{:.==, DeFMat, DeFMat} (2, 3)
+@test_dex (a .!= b) DelayedBinaryMap{:.!=, DeFMat, DeFMat} (2, 3)
+@test_dex (a .> b)  DelayedBinaryMap{:.>,  DeFMat, DeFMat} (2, 3)
+@test_dex (a .< b)  DelayedBinaryMap{:.<,  DeFMat, DeFMat} (2, 3)
+@test_dex (a .>= b) DelayedBinaryMap{:.>=, DeFMat, DeFMat} (2, 3)
+@test_dex (a .<= b) DelayedBinaryMap{:.<=, DeFMat, DeFMat} (2, 3)
 
