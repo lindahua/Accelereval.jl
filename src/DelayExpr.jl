@@ -8,8 +8,12 @@ module DelayExpr
 	dex, funsym, arguments, result_size
 
 
+	# include sources
+
 	include("exprtypes.jl")
 	include("exprshow.jl")
 	include("mathfuns.jl")
 
+	include("codegen.jl")
+	include("devectorize.jl")
 end
