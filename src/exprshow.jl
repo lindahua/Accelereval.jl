@@ -2,6 +2,13 @@
 
 import Base.show
 
+function print_indent(io::IO, indent::Int, x)
+	if indent > 0
+		print(io, repeat("    ", indent))
+	end
+	print(io, x)
+end
+
 function println_indent(io::IO, indent::Int, x)
 	if indent > 0
 		print(io, repeat("    ", indent))
@@ -10,11 +17,11 @@ function println_indent(io::IO, indent::Int, x)
 end
 
 _typehead(x::DelayedArray) = "DelayedArray"
-_typehead(x::DelayedUnaryExpr) = "DelayedUnaryExpr"
-_typehead(x::DelayedBinaryExpr) = "DelayedBinaryExpr"
-_typehead(x::DelayedTernaryExpr) = "DelayedTernaryExpr"
+_typehead{F}(x::DelayedUnaryMap{F}) = "DelayedUnaryMap (fun = $F)"
+_typehead{F}(x::DelayedBinaryMap{F}) = "DelayedBinaryMap (fun = $F)"
+_typehead{F}(x::DelayedTernaryMap{F}) = "DelayedTernaryMap (fun = $F)"
 
-exprhead(x::DelayedExpr) = "$(_typehead(x)) (size = $(result_size(x)))"
+exprhead(x::DelayedExpr) = "$(_typehead(x)) (size = $(resultsize(x)))"
 
 show_expr(io::IO, indent::Int, x::DelayedExpr) = println(exprhead(x))
 
@@ -23,10 +30,11 @@ show_expr(io::IO, indent::Int, x::Number) = println("Number ($x)")
 function show_expr(io::IO, indent::Int, x::DelayedMap)
 	println(exprhead(x))
 	for (i, a) in enumerate(arguments(x))
-		println_indent(io, indent, "Argument [$i]: ")
-		show_epxr(io, indent+1, x)
+		print_indent(io, indent+1, "Argument [$i]: ")
+		show_expr(io, indent+1, a)
 	end
 end
 
+show_expr(io::IO, x::DelayedExpr) = show_expr(io, 0, x)
 show(io::IO, x::DelayedExpr) = show_expr(io, x)
 
