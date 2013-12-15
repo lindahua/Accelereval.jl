@@ -22,6 +22,8 @@ function devec_eval!(r::AbstractArray, ex::DelayedExpr)
 end
 
 
+# Devectorized code genration for different kinds of expressions
+
 function devectorize_code(s::Symbol, x::DelayedArray)
 	a = gensym("a")
 	pre = assign_expr(a, :($s.arr))  # a = s.arr
