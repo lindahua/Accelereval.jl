@@ -1,4 +1,4 @@
-using DelayExpr
+using DEVA
 using Base.Test
 
 macro test_dex(x, ty, rsiz)
