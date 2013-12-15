@@ -21,7 +21,7 @@ _typehead{F}(x::DelayedUnaryMap{F}) = "DelayedUnaryMap (fun = $F)"
 _typehead{F}(x::DelayedBinaryMap{F}) = "DelayedBinaryMap (fun = $F)"
 _typehead{F}(x::DelayedTernaryMap{F}) = "DelayedTernaryMap (fun = $F)"
 
-exprhead(x::DelayedExpr) = "$(_typehead(x)) (size = $(resultsize(x)))"
+exprhead(x::DelayedExpr) = "$(_typehead(x)) (size = $(result_size(x)))"
 
 show_expr(io::IO, indent::Int, x::DelayedExpr) = println(exprhead(x))
 

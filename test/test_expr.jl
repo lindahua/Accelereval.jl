@@ -1,8 +1,23 @@
 using DelayExpr
 using Base.Test
 
-a = [1, 2, 3]
-b = [3, 5, 6]
+amat = rand(2, 3)
+bmat = rand(2, 3)
+cmat = rand(2, 3)
 
-println(dex(a))
-println(dex(a) + abs2(dex(b)))
+a = dex(amat)
+b = dex(bmat)
+c = dex(cmat)
+
+typealias DelayedFMat DelayedArray{Array{Float64, 2}}
+
+@test typeof(a) == DelayedFMat
+@test typeof(b) == DelayedFMat
+@test typeof(c) == DelayedFMat
+
+@test a.arr === amat
+@test b.arr === bmat
+@test c.arr === cmat
+
+@test typeof(abs(a)) == DelayedUnaryMap{:abs, DelayedFMat}
+@test typeof(a + b) == DelayedBinaryMap{:+, DelayedFMat, DelayedFMat}
