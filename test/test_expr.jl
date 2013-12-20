@@ -1,4 +1,4 @@
-using DEVA
+using FAST
 using Base.Test
 
 macro test_dex(x, ty, rsiz)

@@ -1,6 +1,6 @@
 # Test devectorized evaluation
 
-using DEVA
+using FAST
 using Base.Test
 
 am = rand(3, 4)
