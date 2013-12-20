@@ -1,4 +1,4 @@
-DEVA.jl
+FAST.jl
 ========
 
-A Julia framework for delayed numeric expression evaluation. The name **DEVA** is an acronym for *Delayed EVAluation*. This also coincides with the name of a powerful god in Buddhism.
+A Julia framework that allows you to define, optimize, and evaluate expressions in a lazy manner. The name **FAST** is an acronym for *FAst, Simple, and Transparent*.
