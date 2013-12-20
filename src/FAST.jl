@@ -1,4 +1,5 @@
 module FAST
+	using NumericExtensions
 
 	export 
 
