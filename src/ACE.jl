@@ -1,6 +1,4 @@
-module FAST
-	using NumericExtensions
-
+module ACE
 	import 
 
 	Base.show, Base.symbol,
@@ -13,14 +11,13 @@ module FAST
 	Base.max, Base.min, 
 	Base.abs, Base.abs2, Base.sqrt, Base.cbrt
 
-
 	export 
 
 	# exprtypes
 	AbstractNumExpr, Constant, constant,
 	Variable, ScalarVar, VectorVar, MatrixVar, 
 	variable, scalarvar, vectorvar, matrixvar,
-	MapExpr, mapexpr
+	SFunc, funsym, MapExpr, mapexpr
 
 	# include sources
 

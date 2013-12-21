@@ -49,39 +49,64 @@ symbol(v::Variable) = v.sym
 #
 ########################################
 
-type MapExpr{F<:Functor, Args<:(AbstractNumExpr...)}
+# symbolic functions
+
+type SFunc{S} end 
+
+SFunc(s::Symbol) = SFunc{s}()
+symbol{S}(f::SFunc{S}) = S
+
+# map expression
+
+type MapExpr{S, Args<:(AbstractNumExpr...)}
 	args::Args
 end
 
-MapExpr{F<:Functor,Args<:(AbstractNumExpr...)}(::Type{F}, args::Args) = MapExpr{F,Args}(args)
+MapExpr{Args<:(AbstractNumExpr...)}(S::Symbol, args::Args) = MapExpr{S,Args}(args)
 
-mapexpr{F<:Functor}(::Type{F}, args::AbstractNumExpr...) = MapExpr(F, args)
+mapexpr(S::Symbol, args::AbstractNumExpr...) = MapExpr(S, args)
 
-== {F,Args}(x::MapExpr{F,Args}, y::MapExpr{F,Args}) = (x.args == y.args)
+funsym{S}(x::MapExpr{S}) = S
 
+== {S,Args}(x::MapExpr{S,Args}, y::MapExpr{S,Args}) = (x.args == y.args)
+
+macro decl_map1(s)
+	quote
+		global ($s)
+		($s)(x::AbstractNumExpr) = mapexpr($(Meta.quot(s)), x)
+	end
+end
+
+macro decl_map2(s)
+	quote
+		global ($s)
+		($s)(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr($(Meta.quot(s)), x, y)
+	end
+end
 
 ## arithmetics
 
-- (x::AbstractNumExpr) = mapexpr(Negate, x)
+@decl_map1 -
 
-+ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Add, x, y)
-- (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Subtract, x, y)
+@decl_map2 +
+@decl_map2 -
 
-.+ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Add, x, y)
-.- (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Subtract, x, y)
-.* (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Multiply, x, y)
-./ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Divide, x, y)
-.\ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Divide, y, x)
+.+ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:+, x, y)
+.- (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:-, x, y)
+.* (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:*, x, y)
+./ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:/, x, y)
+.\ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:\, y, x)
 
-.^ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(Pow, x, y)
+.^ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:^, x, y)
 
 # algebraic functions
 
-max(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(MaxFun, x, y)
-min(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(MinFun, x, y)
+@decl_map2 max
+@decl_map2 min
 
-abs(x::AbstractNumExpr) = mapexpr(AbsFun, x)
-abs2(x::AbstractNumExpr) = mapexpr(Abs2Fun, x)
-sqrt(x::AbstractNumExpr) = mapexpr(SqrtFun, x)
-cbrt(x::AbstractNumExpr) = mapexpr(CbrtFun, x)
+@decl_map1 abs
+@decl_map1 abs2
+@decl_map1 sqrt
+@decl_map1 cbrt
+
 

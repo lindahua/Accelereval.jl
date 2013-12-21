@@ -1,4 +1,4 @@
-using FAST
+using ACE
 using Base.Test
 
 import NumericExtensions.Add, NumericExtensions.AbsFun
@@ -24,12 +24,12 @@ z = matrixvar(:z, Bool)
 @test z == z
 
 a = abs(x)
-@test isa(a, MapExpr{AbsFun, (ScalarVar{Float64},)})
-@test a == mapexpr(AbsFun, x)
+@test isa(a, MapExpr{:abs, (ScalarVar{Float64},)})
+@test a == mapexpr(:abs, x)
 @test !(a != a)
 
 a = x + y
-@test isa(a, MapExpr{Add, (ScalarVar{Float64}, VectorVar{Int32})})
-@test a == mapexpr(Add, x, y)
+@test isa(a, MapExpr{:+, (ScalarVar{Float64}, VectorVar{Int32})})
+@test a == mapexpr(:+, x, y)
 @test !(a != a)
 
