@@ -25,11 +25,13 @@ z = matrixvar(:z, Bool)
 
 a = abs(x)
 @test isa(a, MapExpr{:abs, (ScalarVar{Float64},)})
+@test funsym(a) == :abs
 @test a == mapexpr(:abs, x)
 @test !(a != a)
 
-a = x + y
+a = x .+ y
 @test isa(a, MapExpr{:+, (ScalarVar{Float64}, VectorVar{Int32})})
+@test funsym(a) == :+
 @test a == mapexpr(:+, x, y)
 @test !(a != a)
 
