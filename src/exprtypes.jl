@@ -9,9 +9,11 @@ abstract AbstractNumExpr
 #
 ########################################
 
-type Constant{T} <: AbstractNumExpr
+type Constant{T<:Number} <: AbstractNumExpr
 	value::T
 end
+
+constant{T<:Number}(v::T) = Constant{T}(v)
 
 type Variable{T,D} <: AbstractNumExpr
 	sym::Symbol
@@ -26,6 +28,8 @@ variable{T<:Number}(s::Symbol, t::Type{T}, D::Int) = Variable{T,D}(s)
 scalarvar{T<:Number}(s::Symbol, t::Type{T}) = variable(s, t, 0)
 vectorvar{T<:Number}(s::Symbol, t::Type{T}) = variable(s, t, 1)
 matrixvar{T<:Number}(s::Symbol, t::Type{T}) = variable(s, t, 2)
+
+symbol(v::Variable) = v.sym
 
 
 ########################################

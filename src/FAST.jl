@@ -1,20 +1,18 @@
 module FAST
 	using NumericExtensions
 
+	import Base.show
+	import Base.symbol
+
 	export 
 
 	# exprtypes
-	DelayedExpr, DelayedArray, 
-	DelayedMap, DelayedUnaryMap, DelayedBinaryMap, DelayedTernaryMap,
-	dex, funsym, arguments, result_size
-
+	AbstractNumExpr, 
+	Variable, ScalarVar, VectorVar, MatrixVar, 
+	variable, scalarvar, vectorvar, matrixvar,
+	MapExpr, mapexpr
 
 	# include sources
 
 	include("exprtypes.jl")
-	include("exprshow.jl")
-	include("mathfuns.jl")
-
-	include("codegen.jl")
-	include("devectorize.jl")
 end
