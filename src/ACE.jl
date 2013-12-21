@@ -13,13 +13,17 @@ module ACE
 
 	export 
 
+	# functions
+	SFunc, funsym,
+
 	# exprtypes
 	AbstractNumExpr, Constant, constant,
 	Variable, ScalarVar, VectorVar, MatrixVar, 
 	variable, scalarvar, vectorvar, matrixvar,
-	SFunc, funsym, MapExpr, mapexpr
+	MapExpr, mapexpr
 
 	# include sources
 
+	include("functions.jl")
 	include("exprtypes.jl")
 end

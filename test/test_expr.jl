@@ -24,14 +24,14 @@ z = matrixvar(:z, Bool)
 @test z == z
 
 a = abs(x)
-@test isa(a, MapExpr{:abs, (ScalarVar{Float64},)})
+@test isa(a, MapExpr{SAbs, (ScalarVar{Float64},)})
 @test funsym(a) == :abs
-@test a == mapexpr(:abs, x)
+@test a == mapexpr(SAbs, x)
 @test !(a != a)
 
 a = x .+ y
-@test isa(a, MapExpr{:+, (ScalarVar{Float64}, VectorVar{Int32})})
+@test isa(a, MapExpr{SAdd, (ScalarVar{Float64}, VectorVar{Int32})})
 @test funsym(a) == :+
-@test a == mapexpr(:+, x, y)
+@test a == mapexpr(SAdd, x, y)
 @test !(a != a)
 

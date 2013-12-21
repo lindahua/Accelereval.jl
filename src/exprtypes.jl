@@ -49,64 +49,65 @@ symbol(v::Variable) = v.sym
 #
 ########################################
 
-# symbolic functions
-
-type SFunc{S} end 
-
-SFunc(s::Symbol) = SFunc{s}()
-symbol{S}(f::SFunc{S}) = S
-
 # map expression
 
-type MapExpr{S, Args<:(AbstractNumExpr...)}
+type MapExpr{F<:SFunc, Args<:(AbstractNumExpr...)}
 	args::Args
 end
 
-MapExpr{Args<:(AbstractNumExpr...)}(S::Symbol, args::Args) = MapExpr{S,Args}(args)
+MapExpr{F<:SFunc, Args<:(AbstractNumExpr...)}(::Type{F}, args::Args) = MapExpr{F,Args}(args)
 
-mapexpr(S::Symbol, args::AbstractNumExpr...) = MapExpr(S, args)
+mapexpr{F<:SFunc}(::Type{F}, args::AbstractNumExpr...) = MapExpr(F, args)
 
-funsym{S}(x::MapExpr{S}) = S
+funsym{F<:SFunc}(x::MapExpr{F}) = symbol(F)
 
-== {S,Args}(x::MapExpr{S,Args}, y::MapExpr{S,Args}) = (x.args == y.args)
+== {F<:SFunc,Args}(x::MapExpr{F,Args}, y::MapExpr{F,Args}) = (x.args == y.args)
 
-macro decl_map1(s)
+
+########################################
+#
+#   extended functions to construct
+#   map expressions
+#
+########################################
+
+macro decl_map1(s, F)
 	quote
 		global ($s)
-		($s)(x::AbstractNumExpr) = mapexpr($(Meta.quot(s)), x)
+		($s)(x::AbstractNumExpr) = mapexpr($F, x)
 	end
 end
 
-macro decl_map2(s)
+macro decl_map2(s, F)
 	quote
 		global ($s)
-		($s)(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr($(Meta.quot(s)), x, y)
+		($s)(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr($F, x, y)
 	end
 end
 
 ## arithmetics
 
-@decl_map1 -
+@decl_map1 (-) SNegate
 
-@decl_map2 +
-@decl_map2 -
+@decl_map2 (+) SAdd
+@decl_map2 (.+) SAdd
+@decl_map2 (-) SSubtract
+@decl_map2 (.-) SSubtract
 
-.+ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:+, x, y)
-.- (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:-, x, y)
-.* (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:*, x, y)
-./ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:/, x, y)
-.\ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:\, y, x)
+@decl_map2 (.*) SMultiply
+@decl_map2 (./) SDivide
+@decl_map2 (.^) SPower
 
-.^ (x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(:^, x, y)
+(.\)(x::AbstractNumExpr, y::AbstractNumExpr) = mapexpr(SDivide, y, x)
 
 # algebraic functions
 
-@decl_map2 max
-@decl_map2 min
+@decl_map2 max SMax
+@decl_map2 min SMin
 
-@decl_map1 abs
-@decl_map1 abs2
-@decl_map1 sqrt
-@decl_map1 cbrt
+@decl_map1 abs SAbs
+@decl_map1 abs2 SAbs2
+@decl_map1 sqrt SSqrt
+@decl_map1 cbrt SCbrt
 
 
