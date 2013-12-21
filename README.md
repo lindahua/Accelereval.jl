@@ -1,4 +1,4 @@
 FAST.jl
 ========
 
-A Julia framework that allows you to define, optimize, and evaluate expressions in a lazy manner. The name **FAST** is an acronym for *FAst, Simple, and Transparent*.
+This is a Julia framework that allows you to re-compile numerical functions for faster computation. The name *ACE* is an acronym for *Accelerated re-Compiled Evaluation*.
