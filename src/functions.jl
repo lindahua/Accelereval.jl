@@ -29,6 +29,11 @@ export SNegate, SAdd, SSubtract, SMultiply, SDivide, SPower, SModulo
 @def_sfunc SPower (^)
 @def_sfunc SModulo (%)
 
+@def_sfunc SDiv div
+@def_sfunc SFld fld
+@def_sfunc SRem rem
+@def_sfunc SMod mod
+
 # Compare
 
 export SMax, SMin
