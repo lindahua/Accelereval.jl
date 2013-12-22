@@ -1,7 +1,7 @@
-using ACE
+using Accelereval
 using Base.Test
 
-import NumericExtensions.Add, NumericExtensions.AbsFun
+import NumericExtensions: Add, AbsFun
 
 
 c = constant(1.0)

@@ -1,4 +1,4 @@
-module ACE
+module Accelereval
 	import 
 
 	Base.show, Base.symbol,
