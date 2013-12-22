@@ -45,6 +45,10 @@ end
 maptype(::Type{SAdd}, ::Type{Bool}, ::Type{Bool}) = Int
 maptype(::Type{SSubtract}, ::Type{Bool}, ::Type{Bool}) = Int
 
+maptype{T<:FloatingPoint}(::Type{SNegate}, ::Type{T}) = T
+maptype{T<:Integer}(::Type{SNegate}, ::Type{T}) = T
+maptype(::Type{SNegate}, ::Type{Bool}) = Int
+
 # SDivide
 
 maptype{T1<:Number,T2<:Number}(::Type{SDivide}, ::Type{T1}, ::Type{T2}) = promote_fptype(T1, T2)
