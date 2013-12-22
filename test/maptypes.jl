@@ -70,6 +70,14 @@ test_maptypes([(SEqual, .==), (SNotEqual, .!=), (SGreater, .>), (SLess, .<),
 	(SGreaterEqual, .>=), (SLessEqual, .<=)], realtypes, realtypes)
 
 
+## Bit operations
+
+println("Bit operations")
+
+test_maptypes([(SBitwiseNot, ~)], inttypes)
+test_maptypes([(SBitwiseAnd, &), (SBitwiseOr, |), (SBitwiseXor, $)], inttypes, inttypes)
+
+
 ## Simple functions
 
 println("Simple functions")
@@ -78,6 +86,10 @@ test_maptypes([(SAbs, abs), (SAbs2, abs2), (SSign, sign)], realtypes)
 
 test_maptypes([(SMax, max), (SMin, min)], realtypes, realtypes)
 
+test_maptypes([
+	(SFloor, floor), (SCeil, ceil), (SRound, round), (STrunc, trunc),
+	(SIfloor, ifloor), (SIceil, iceil), (SIround, iround), (SItrunc, itrunc)], realtypes)
+
 
 ## Elementary functions
 
@@ -85,10 +97,27 @@ println("Elementary functions")
 
 test_maptypes([(SSqrt, sqrt), (SCbrt, cbrt), 
 	(SExp, exp), (SExp2, exp2), (SExp10, exp10), (SExpm1, expm1), 
-	(SLog, log), (SLog2, log2), (SLog10, log10), (SLog1p, log1p)], realtypes)
+	(SLog, log), (SLog2, log2), (SLog10, log10), (SLog1p, log1p), 
+	(SSin, sin), (SCos, cos), (STan, tan), (SCot, cot), (SSec, sec), (SCsc, csc), 
+	(SAsin, asin), (SAcos, acos), (SAtan, atan), (SAcot, acot), (SAsec, asec), (SAcsc, acsc), 
+	(SSinh, sinh), (SCosh, cosh), (STanh, tanh), (SCoth, coth), (SSech, sech), (SCsch, csch), 
+	(SAsinh, asinh), (SAcosh, acosh), (SAtanh, atanh), (SAcoth, acoth), (SAsech, asech), (SAcsch, acsch)],  
+	realtypes)
+
+# ignoring: sind, asind, ...
 
 test_maptypes([(SExponent, exponent), (SSignificand, significand)], fptypes)
 
-# test_maptypes([(SHypot, hypot)], realtypes, realtypes)
+test_maptypes([(SHypot, hypot), (SAtan2, atan2)], realtypes, realtypes)
+
+
+## Special functions
+
+println("Special functions")
+
+test_maptypes([(SErf, erf), (SErfc, erfc), (SErfinv, erfinv), (SErfcinv, erfcinv), 
+	(SGamma, gamma), (SLgamma, lgamma), (SEta, eta), (SZeta, zeta)], fptypes) 
+
+test_maptypes([(SBeta, beta), (SLbeta, lbeta)], fptypes, fptypes)
 
 

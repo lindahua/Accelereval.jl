@@ -78,6 +78,20 @@ for C in [SGreater, SLess, SGreaterEqual, SLessEqual]
 	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = Bool
 end
 
+
+#################################################
+#
+#    bit operations
+#
+#################################################
+
+maptype{T<:Integer}(::Type{SBitwiseNot}, ::Type{T}) = T
+
+for C in [SBitwiseAnd, SBitwiseOr, SBitwiseXor]
+	@eval maptype{T1<:Integer, T2<:Integer}(::Type{$C}, ::Type{T1}, ::Type{T2}) = promote_type(T1, T2)
+end
+
+
 #################################################
 #
 #    simple functions
@@ -104,6 +118,17 @@ maptype(::Type{SAbs2}, ::Type{Bool}) = Bool
 # sign
 maptype{T<:Real}(::Type{SSign},::Type{T}) = T
 
+# rounding
+
+for C in [SFloor, SCeil, SRound, STrunc]
+	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}) = T
+end
+
+for C in [SIfloor, SIceil, SIround, SItrunc]
+	@eval maptype{T<:Integer}(::Type{$C}, ::Type{T}) = T
+	@eval maptype{T<:FloatingPoint}(::Type{$C}, ::Type{T}) = Int64
+end
+
 
 #################################################
 #
@@ -112,17 +137,37 @@ maptype{T<:Real}(::Type{SSign},::Type{T}) = T
 #################################################
 
 for C in [SSqrt, SCbrt,
-	SExp, SExp2, SExp10, SExpm1, SLog, SLog2, SLog10, SLog1p]	
+	SExp, SExp2, SExp10, SExpm1, SLog, SLog2, SLog10, SLog1p, 
+	SSin, SCos, STan, SCot, SSec, SCsc, SAsin, SAcos, SAtan, SAcot, SAsec, SAcsc, 
+	SSinh, SCosh, STanh, SCoth, SSech, SCsch, SAsinh, SAcosh, SAtanh, SAcoth, SAsech, SAcsch, 
+	SSind, SCosd, STand, SCotd, SSecd, SCscd, SAsind, SAcosd, SAtand, SAcotd, SAsecd, SAcscd]
+
 	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}) = _fptype(T)
 end
 
-for C in [SHypot]
-	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = _fptype(promote_type(T1, T2))
+for C in [SHypot, SAtan2]
+	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}, ::Type{T}) = _fptype(T)
+	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = promote_type(_fptype(T1), _fptype(T2))
 end
 
 maptype{T<:FloatingPoint}(::Type{SExponent}, ::Type{T}) = Int
 maptype{T<:FloatingPoint}(::Type{SSignificand}, ::Type{T}) = T
 
+
+#################################################
+#
+#    special functions
+#
+#################################################
+
+for C in [SErf, SErfc, SErfinv, SErfcinv, SGamma, SLgamma, SDigamma, SEta, SZeta]
+	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}) = _fptype(T)
+end
+
+for C in [SBeta, SLbeta]
+	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}, ::Type{T}) = _fptype(T)
+	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = promote_type(_fptype(T1), _fptype(T2))
+end
 
 
 
