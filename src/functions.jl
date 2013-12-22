@@ -36,11 +36,7 @@ export SDiv, SFld, SRem, SMod
 
 # Compare
 
-export SMax, SMin
 export SGreater, SLess, SGreaterEqual, SLessEqual, SEqual, SNotEqual
-
-@def_sfunc SMax max
-@def_sfunc SMin min
 
 @def_sfunc SGreater (>)
 @def_sfunc SLess (<)
@@ -49,12 +45,39 @@ export SGreater, SLess, SGreaterEqual, SLessEqual, SEqual, SNotEqual
 @def_sfunc SEqual (==)
 @def_sfunc SNotEqual (!=)
 
-# Algebraic
+# Simple functions
 
-export SAbs, SAbs2, SSqrt, SCbrt
+export SMax, SMin, SAbs, SAbs2, SSign, SCopysign
+
+@def_sfunc SMax max
+@def_sfunc SMin min
 
 @def_sfunc SAbs abs
 @def_sfunc SAbs2 abs2
+@def_sfunc SSign sign
+
+# Elementary functions
+
+export SSqrt, SCbrt, SHypot
+export SExp, SExp2, SExp10, SExpm1, SLog, SLog2, SLog10, SLog1p, SExponent, SSignificand
+
 @def_sfunc SSqrt sqrt
 @def_sfunc SCbrt cbrt
+@def_sfunc SHypot hypot
+
+@def_sfunc SExp exp
+@def_sfunc SExp2 exp2
+@def_sfunc SExp10 exp10
+@def_sfunc SExpm1 expm1
+
+@def_sfunc SLog log
+@def_sfunc SLog2 log2
+@def_sfunc SLog10 log10
+@def_sfunc SLog1p log1p
+
+@def_sfunc SExponent exponent
+@def_sfunc SSignificand significand
+
+
+
 

@@ -23,6 +23,26 @@ function test_maptype{F<:SFunc}(sf::Type{F}, vecfun::Function, ts::Type...)
 	end
 end
 
+function test_maptypes(pairs, ts)
+	for (sf, vf) in pairs
+		println("    testing $sf ...")
+		for t in ts
+			test_maptype(sf, vf, t)
+		end
+	end
+end
+
+function test_maptypes(pairs, t1s, t2s)
+	for (sf, vf) in pairs
+		println("    testing $sf ...")
+		for t1 in t1s, t2 in t2s
+			test_maptype(sf, vf, t1, t2)
+		end
+	end
+end
+
+## type lists
+
 const inttypes = [Int8, Int16, Int32, Int64, Uint8, Uint16, Uint32, Uint64, Bool]
 const fptypes = [Float32, Float64]
 const cplxtypes = [Complex64, Complex128]
@@ -34,34 +54,41 @@ const numtypes = [realtypes, cplxtypes]
 
 println("Arithmetics")
 
-for (sf, vf) in [(SNegate, -)]
-	println("    testing $sf ...")
-	for t in realtypes
-		test_maptype(sf, vf, t)
-	end
-end
+test_maptypes([(SNegate, -)], realtypes)
 
-for (sf, vf) in [
-	(SAdd,+), (SSubtract,-), (SMultiply,.*), (SDivide,./), (SPower,.^), 
-	(SDiv, div), (SMod, mod)]  # ignoring: SFld, SRem
+test_maptypes([(SAdd,+), (SSubtract,-), (SMultiply,.*), (SDivide,./), 
+	(SPower,.^), (SDiv, div), (SMod, mod)], realtypes, realtypes)
 
-	println("    testing $sf ...")
-	for t1 in realtypes, t2 in realtypes
-		test_maptype(sf, vf, t1, t2)
-	end
-end
+# ignoring SFld, SRem
+
 
 ## Comparison
 
 println("Comparison")
 
-for (sf, vf) in [
-	(SMax, max), (SMin, min), (SEqual, .==), (SNotEqual, .!=),
-	(SGreater, .>), (SLess, .<), (SGreaterEqual, .>=), (SLessEqual, .<=)]
+test_maptypes([(SEqual, .==), (SNotEqual, .!=), (SGreater, .>), (SLess, .<), 
+	(SGreaterEqual, .>=), (SLessEqual, .<=)], realtypes, realtypes)
 
-	println("    testing $sf ...")
-	for t1 in realtypes, t2 in realtypes
-		test_maptype(sf, vf, t1, t2)
-	end
-end
+
+## Simple functions
+
+println("Simple functions")
+
+test_maptypes([(SAbs, abs), (SAbs2, abs2), (SSign, sign)], realtypes)
+
+test_maptypes([(SMax, max), (SMin, min)], realtypes, realtypes)
+
+
+## Elementary functions
+
+println("Elementary functions")
+
+test_maptypes([(SSqrt, sqrt), (SCbrt, cbrt), 
+	(SExp, exp), (SExp2, exp2), (SExp10, exp10), (SExpm1, expm1), 
+	(SLog, log), (SLog2, log2), (SLog10, log10), (SLog1p, log1p)], realtypes)
+
+test_maptypes([(SExponent, exponent), (SSignificand, significand)], fptypes)
+
+# test_maptypes([(SHypot, hypot)], realtypes, realtypes)
+
 

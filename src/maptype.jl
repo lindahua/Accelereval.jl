@@ -78,32 +78,50 @@ for C in [SGreater, SLess, SGreaterEqual, SLessEqual]
 	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = Bool
 end
 
+#################################################
+#
+#    simple functions
+#
+#################################################
+
+# max & min
 for C in [SMax, SMin]
 	@eval maptype{T1<:Number, T2<:Number}(::Type{$C}, ::Type{T1}, ::Type{T2}) = promote_type(T1, T2)
 end
-
-
-#################################################
-#
-#    algebraic functions
-#
-#################################################
 
 # abs
 maptype(::Type{SAbs}, ::Type{Bool}) = Bool
 maptype{T<:Unsigned}(::Type{SAbs}, ::Type{T}) = T
 maptype{T<:Signed}(::Type{SAbs}, ::Type{T}) = promote_type(T, Int)
 maptype{T<:FloatingPoint}(::Type{SAbs}, ::Type{T}) = T
-maptype{T<:Real}(::Type{SAbs}, ::Type{Complex{T}}) = _fptype(T)
 
 # abs2
-maptype{T<:Real}(::Type{SAbs2}, ::Type{T}) = T
-maptype{T<:Real}(::Type{SAbs2}, ::Type{Complex{T}}) = _fptype(T)
+maptype{T<:FloatingPoint}(::Type{SAbs2}, ::Type{T}) = T
+maptype{T<:Signed}(::Type{SAbs2}, ::Type{T}) = promote_type(T, Int)
+maptype{T<:Unsigned}(::Type{SAbs2}, ::Type{T}) = promote_type(T, Uint)
+maptype(::Type{SAbs2}, ::Type{Bool}) = Bool
 
-for C in [SSqrt, SCbrt]
+# sign
+maptype{T<:Real}(::Type{SSign},::Type{T}) = T
+
+
+#################################################
+#
+#    elementary functions
+#
+#################################################
+
+for C in [SSqrt, SCbrt,
+	SExp, SExp2, SExp10, SExpm1, SLog, SLog2, SLog10, SLog1p]	
 	@eval maptype{T<:Real}(::Type{$C}, ::Type{T}) = _fptype(T)
 end
 
+for C in [SHypot]
+	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = _fptype(promote_type(T1, T2))
+end
+
+maptype{T<:FloatingPoint}(::Type{SExponent}, ::Type{T}) = Int
+maptype{T<:FloatingPoint}(::Type{SSignificand}, ::Type{T}) = T
 
 
 
