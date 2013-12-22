@@ -10,6 +10,9 @@ module Accelereval
 	# functions
 	SFunc, funsym,
 
+	# maptype
+	maptype,
+
 	# exprtypes
 	AbstractNumExpr, Constant, constant,
 	Variable, ScalarVar, VectorVar, MatrixVar, 
@@ -19,5 +22,7 @@ module Accelereval
 	# include sources
 
 	include("functions.jl")
+	include("maptype.jl")
+
 	include("exprtypes.jl")
 end

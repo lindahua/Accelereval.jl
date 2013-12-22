@@ -19,7 +19,8 @@ end
 
 # Arithmetics
 
-export SNegate, SAdd, SSubtract, SMultiply, SDivide, SPower, SModulo
+export SNegate, SAdd, SSubtract, SMultiply, SDivide, SPower
+export SDiv, SFld, SRem, SMod
 
 @def_sfunc SNegate (-) 
 @def_sfunc SAdd (+)
@@ -27,7 +28,6 @@ export SNegate, SAdd, SSubtract, SMultiply, SDivide, SPower, SModulo
 @def_sfunc SMultiply (*)
 @def_sfunc SDivide (/)
 @def_sfunc SPower (^)
-@def_sfunc SModulo (%)
 
 @def_sfunc SDiv div
 @def_sfunc SFld fld
