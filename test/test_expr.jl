@@ -1,9 +1,6 @@
 using Accelereval
 using Base.Test
 
-import NumericExtensions: Add, AbsFun
-
-
 c = constant(1.0)
 @test isa(c, Constant{Float64})
 @test c == c
