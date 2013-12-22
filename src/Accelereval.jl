@@ -1,15 +1,9 @@
 module Accelereval
-	import 
 
-	Base.show, Base.symbol,
-
-	# arithmetics
-	Base.+, Base.-, Base.*, Base./, Base.\, Base.^, Base.%,
-	Base.(.+), Base.(.-), Base.(.*), Base.(./), Base.(.\), Base.(.^), 
-
-	# algebraic math functions
-	Base.max, Base.min, 
-	Base.abs, Base.abs2, Base.sqrt, Base.cbrt
+	import Base: show, symbol
+	import Base: +, -, *, /, \, ^, %, .+, .-, .*, ./, .\, .^
+	import Base: max, min
+	import Base: abs, abs2, sqrt, cbrt
 
 	export 
 
