@@ -34,6 +34,13 @@ const numtypes = [realtypes, cplxtypes]
 
 println("Arithmetics")
 
+for (sf, vf) in [(SNegate, -)]
+	println("    testing $sf ...")
+	for t in realtypes
+		test_maptype(sf, vf, t)
+	end
+end
+
 for (sf, vf) in [
 	(SAdd,+), (SSubtract,-), (SMultiply,.*), (SDivide,./), (SPower,.^), 
 	(SDiv, div), (SMod, mod)]  # ignoring: SFld, SRem
