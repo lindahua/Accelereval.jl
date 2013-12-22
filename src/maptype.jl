@@ -78,6 +78,10 @@ for C in [SGreater, SLess, SGreaterEqual, SLessEqual]
 	@eval maptype{T1<:Real, T2<:Real}(::Type{$C}, ::Type{T1}, ::Type{T2}) = Bool
 end
 
+for C in [SMax, SMin]
+	@eval maptype{T1<:Number, T2<:Number}(::Type{$C}, ::Type{T1}, ::Type{T2}) = promote_type(T1, T2)
+end
+
 
 #################################################
 #

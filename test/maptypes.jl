@@ -51,4 +51,17 @@ for (sf, vf) in [
 	end
 end
 
+## Comparison
+
+println("Comparison")
+
+for (sf, vf) in [
+	(SMax, max), (SMin, min), (SEqual, .==), (SNotEqual, .!=),
+	(SGreater, .>), (SLess, .<), (SGreaterEqual, .>=), (SLessEqual, .<=)]
+
+	println("    testing $sf ...")
+	for t1 in realtypes, t2 in realtypes
+		test_maptype(sf, vf, t1, t2)
+	end
+end
 
