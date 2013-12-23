@@ -28,6 +28,9 @@ type Variable{T,D} <: AbstractNumExpr
 	sym::Symbol
 end
 
+eltype{T,D}(v::Variable{T,D}) = T
+ndims{T,D}(v::Variable{T,D}) = D
+
 == {T,D}(x::Variable{T,D}, y::Variable{T,D}) = (x.sym == y.sym)
 
 typealias ScalarVar{T} Variable{T,0}
