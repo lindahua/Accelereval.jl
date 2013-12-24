@@ -1,5 +1,6 @@
 # Compile functions into an expression graph
 
+
 ###########################################################
 #
 #   Compilation context
@@ -15,8 +16,6 @@
 #
 ###########################################################
 
-compile_log(s::String) = println(s)
-compile_error(msg::String) = error("[Accelereval]: $msg")
 
 type CompilationContext
 	funname::Symbol       # function name
@@ -50,20 +49,6 @@ type CompilationContext
 	end
 end
 
-function parse_vartype(t::Expr)
-	# parse a variable type expression to get eltype and ndims
-	
-end
-
-function parse_vardecl(t::Expr)
-	# parse variable declaration like a::Array{T,2} to a variable 
-
-	isa(t, Symbol) && compile_error("function parameter $t lacks type annotation.")
-	(t.head == :(::) && length(t.args) == 2) && compile_error("invalid parameter declaration: $(t).")
-	vname::Symbol = t.args[1]
-	(et, nd) = parse_vartype(t.args[2])
-	return Variable(vname, et, nd)
-end
 
 
 #################################################
