@@ -1,4 +1,4 @@
-# Tools for compilation
+# Tools for expression parsing
 
 
 compile_log(s::String) = println(s)

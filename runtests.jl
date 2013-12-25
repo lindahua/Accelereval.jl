@@ -1,6 +1,6 @@
 # All unit tests
 
-tests = ["exprtypes", "compiletools"]
+tests = ["exprtypes", "exparse"]
 
 println("Testing Accelereval")
 

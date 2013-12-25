@@ -1,4 +1,4 @@
-# Testing on compile tools
+# Testing for parse.jl
 
 using Accelereval
 using Base.Test
