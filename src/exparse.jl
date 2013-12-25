@@ -1,9 +1,6 @@
 # Tools for expression parsing
 
 
-compile_log(s::String) = println(s)
-compile_error(msg::String) = error("[Accelereval]: $msg")
-
 tyannot_error(s::Symbol, msg::String) = compile_error("Annotation of $s: $msg")
 
 #################################################
