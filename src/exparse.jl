@@ -67,3 +67,40 @@ function parse_funhead(f::Expr)
 end
 
 
+
+#################################################
+#
+#   Parse right-hand-side expressions
+#
+#################################################
+
+function lookup_variable(vmap::VariableMap, s::Symbol)
+	v = get(vmap, s, nothing)
+	if v == nothing
+		compile_error("variable $s is not initialized when it is used.")
+	end
+	return v::Variable
+end
+
+
+parse_rhs(vmap::VariableMap, ex::Symbol) = lookup_variable(vmap, ex)
+
+function parse_rhs(vmap::VariableMap, ex::Expr)
+	if ex.head == :call
+		parse_call(vmap, ex)
+	else
+		compile_error("Unsupported expression: $(ex).")
+	end
+end
+
+
+function parse_call(vmap::VariableMap, ex::Expr)
+	@assert ex.head == :call
+
+	fsym = ex.args[1]
+	isa(fsym, Symbol) || compile_error("Only simple function name is supported. (ref: $(fsym))")
+
+	delayed_call = Expr(:call, fsym, [parse_rhs(vmap, a) for a in ex.args[2:]]...)
+	eval(delayed_call)
+end
+

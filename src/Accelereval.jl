@@ -25,5 +25,7 @@ module Accelereval
 	include("maptype.jl")
 
 	include("exprtypes.jl")
+	
+	include("compilebase.jl")
 	include("exparse.jl")
 end

@@ -18,10 +18,12 @@ compile_error(msg::String) = error("[Accelereval]: $msg")
 #
 ###########################################################
 
+typealias VariableMap Dict{Symbol,Variable}
+
 type CompilationContext
 	funname::Symbol                 # function name
 	funparams::Vector{Variable}     # list of (annotated) function parameters
-	varmap::Dict{Symbol, Variable}  # symbol name -> variable
+	varmap::VariableMap  			# symbol name -> variable
 	compiled_codes::Vector{Expr}
 
 	function CompilationContext(fname::Symbol, fparams::Vector{Variable})

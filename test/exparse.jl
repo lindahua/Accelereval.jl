@@ -3,7 +3,7 @@
 using Accelereval
 using Base.Test
 
-import Accelereval: parse_vardecl, parse_funhead
+import Accelereval: parse_vardecl, parse_funhead, parse_rhs
 
 # parse variables
 
@@ -24,4 +24,24 @@ import Accelereval: parse_vardecl, parse_funhead
 @test length(vars) == 2
 @test vars[1] == variable(:x, Float64, 0)
 @test vars[2] == variable(:y, Int, 2)
+
+
+### parse rhs
+
+_x = variable(:x, Float64, 1)
+_y = variable(:y, Float64, 1)
+_a = variable(:a, Float64, 0)
+_b = variable(:b, Float64, 0)
+
+vmap = (Symbol=>Variable)[:x=>_x, :y=>_y, :a=>_a, :b=>_b]
+
+# variables
+
+@test parse_rhs(vmap, :x) == variable(:x, Float64, 1)
+@test_throws parse_rhs(vmap, :abc)
+
+# function calls
+
+@test parse_rhs(vmap, :(abs(x))) == mapexpr(SAbs, _x)
+@test parse_rhs(vmap, :(x - y)) == mapexpr(SSubtract, _x, _y)
 
