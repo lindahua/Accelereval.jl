@@ -47,3 +47,26 @@ function parse_vardecl(t::Expr)
 	(et, nd) = parse_vartype(s, T)
 	return variable(s, et, nd)
 end
+
+
+#################################################
+#
+#   Parse function header
+#
+#################################################
+
+function parse_funhead(f::Expr)
+	# parse a function head expression like f(x::A, y::B) 
+	# it returns (fname, vars), where fname is a symbol
+	# representing the function name, and vars is a sequence
+	# of parsed variables (instances of Variable)
+
+	@assert f.head == :(call)
+
+	fname::Symbol = f.args[1]
+	vars = Variable[parse_vardecl(t) for t in f.args[2:end]]
+
+	return (fname, vars)
+end
+
+

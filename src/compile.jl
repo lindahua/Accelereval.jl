@@ -57,39 +57,5 @@ end
 #
 #################################################
 
-nonvalid_function_err() = error("compile_function: The input expression is not a valid function.")
 
-function compile_function(fex::Expr)
-	if fex.head == :(=)   # f(params...) = ...
-		@assert length(fex.args) == 2
-
-		decl = fex.args[1]
-		body = fex.args[2]
-
-		decl.head == :(call) || nonvalid_function_err()
-		compile_function(decl, body)
-			
-	elseif fex.head == :(function)  
-		@assert length(fex.args) == 2
-
-		decl = fex.args[1]
-		decl = fex.args[2]
-
-		compile_function(decl, body)
-
-	else
-		nonvalid_function_err()
-	end
-end
-
-
-function compile_function(decl::Expr, body::Expr; verbose=false)
-	@assert decl.head == :(call)
-	funname = decl.args[1]
-	funparams = decl.args[2:end]
-
-
-
-
-end
 
